@@ -47,8 +47,8 @@ const getDataCommentWithPostId = (postId) => {
       const { address, company, ...newUser } = user;
       return {
         ...newUser,
-        comments: dataComments.filter((comment) => comment.email == user.email),
-        posts: dataPosts.filter((post) => post.userId == user.id),
+        comments: dataComments.filter((comment) => comment.email === user.email),
+        posts: dataPosts.filter((post) => post.userId === user.id),
       };
     });
     console.log(
