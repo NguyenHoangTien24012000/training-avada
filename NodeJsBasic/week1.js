@@ -1,47 +1,15 @@
-const URL_BASE = "https://jsonplaceholder.typicode.com";
-const USER_RESOURCE = "/users";
-const POST_RESOURCE = "/posts";
-const COMMENT_RESOURCE = "/comments";
-
-const fetchData = async (resource) => {
-  try {
-    const response = await fetch(URL_BASE + resource);
-    return response.json();
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getDataUsers = () => {
-  return fetchData(USER_RESOURCE);
-};
-
-const getDataComments = () => {
-  return fetchData(COMMENT_RESOURCE);
-};
-
-const getDataPosts = () => {
-  return fetchData(POST_RESOURCE);
-};
-
-const getDataPostWithId = (postId) => {
-  return fetchData(POST_RESOURCE + "/" + postId);
-};
-
-const getDataCommentWithPostId = (postId) => {
-  return fetchData(COMMENT_RESOURCE + "?postId=" + postId);
-};
+const fetchData = require('./fetchData');
 
 (async () => {
   try {
     //Step2: Get 10 user
-    const dataUsers = await getDataUsers();
+    const dataUsers = await fetchData('/users');
     console.log("Data user: ", dataUsers);
 
     //step3: Get all the posts and comments. Map data with the user array
     const [dataComments, dataPosts] = await Promise.all([
-      getDataComments(),
-      getDataPosts(),
+      fetchData('/comments'),
+      fetchData('/posts'),
     ]);
     const dataUsersMapWithPostsComments = dataUsers.map((user) => {
       const { address, company, ...newUser } = user;
@@ -95,8 +63,8 @@ const getDataCommentWithPostId = (postId) => {
 
     //Step8: Get the post with ID of 1 via API request, at the same time get comments for post ID of 1 via another API request
     const [dataPostWithId, dataCommentsWithPostId] = await Promise.all([
-      getDataPostWithId(1),
-      getDataCommentWithPostId(1),
+      fetchData('/posts/1'),
+      fetchData('comments?postId=1'),
     ]);
     dataPostWithId["comments"] = dataCommentsWithPostId;
     console.log("Post with ID of 1 and comments postID of 1: ", dataPostWithId);
