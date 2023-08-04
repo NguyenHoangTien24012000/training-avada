@@ -1,7 +1,7 @@
-export function sortProductCreatedAt(sort, dataProduct){
+export function sortProductCreatedAt(sort = "asc", dataProduct){
     if(sort === "asc"){
         return dataProduct.sort((prevProduct, currentProduct) => new Date(prevProduct.createdAt) - new Date(currentProduct.createdAt));
-    }else if(sort === "desc"){
+    }else {
         return dataProduct.sort((prevProduct, currentProduct) => new Date(currentProduct.createdAt) - new Date(prevProduct.createdAt));
     }
 }

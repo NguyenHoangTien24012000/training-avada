@@ -5,7 +5,7 @@ import {
   handleGetProducts,
   handleGetProduct,
   handleUpdateProduct,
-} from "../handlers/products/productHandlers";
+} from "../handlers/product/productHandlers";
 import { productInputMiddleware } from "../middleware/productInputMiddleware";
 // Prefix all routes with /products
 const router = new Router({

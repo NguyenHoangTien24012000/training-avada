@@ -2,32 +2,24 @@ import fs from "fs";
 import products from "./products.json";
 import path from "path";
 import { sortProductCreatedAt } from "../presenter/product/sortProductCreatedAt";
+import { productWithFileds } from "../presenter/product/productWithFileds";
 
 
 export function getAllProducts(queryParam) {
   const {limit, sort} = queryParam;
-  if(limit && sort){
-    const dataLimit = products.slice(0, parseInt(limit));
-    const dataLimitSort = sortProductCreatedAt(sort, dataLimit);
-    return dataLimitSort;
-  }else if(limit){
-    return products.slice(0, parseInt(limit));
-  }else if(sort){
-    return sortProductCreatedAt(sort, products);
+  const dataSort = sortProductCreatedAt(sort, products);
+  if(limit){
+    const dataLimit = dataSort.slice(0, parseInt(limit));
+    return dataLimit;
   }
-  return products;
+  return dataSort;
 }
 
 export function getOneProduct(id, queryParam) {
   const productFind = products.find((product) => parseInt(product.id) === parseInt(id));
   const {fields} = queryParam;
   if(fields){
-    const arrFields = fields.split(',');
-    const productWithFields = {};
-    arrFields.forEach(field => {
-      productWithFields[field] = productFind[field];
-    });
-    return productWithFields;
+    return productWithFileds(fields, productFind);
   }
   return productFind;
 }
@@ -46,7 +38,7 @@ export function updateProduct(id, data) {
   const findIndex = products.findIndex(
     (product) => parseInt(product.id) === parseInt(id)
   );
-  products[findIndex] = { id, ...data };
+  products[findIndex] = { ...data, id};
   fs.writeFileSync(
     path.join(__dirname, 'products.json'),
     JSON.stringify(products)
