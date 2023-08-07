@@ -2,24 +2,27 @@ import fs from "fs";
 import products from "./products.json";
 import path from "path";
 import { sortProductCreatedAt } from "../presenter/product/sortProductCreatedAt";
-import { productWithFileds } from "../presenter/product/productWithFileds";
+import { productWithFields } from "../presenter/product/productWithFileds";
 
 
 export function getAllProducts(queryParam) {
   const {limit, sort} = queryParam;
-  const dataSort = sortProductCreatedAt(sort, products);
-  if(limit){
-    const dataLimit = dataSort.slice(0, parseInt(limit));
-    return dataLimit;
+  let dataProduct = [];
+  if(sort){
+    dataProduct = sortProductCreatedAt(products, sort);
   }
-  return dataSort;
+  if(limit){
+    dataProduct = dataProduct.slice(0, parseInt(limit));
+  }
+  
+  return dataProduct;
 }
 
 export function getOneProduct(id, queryParam) {
   const productFind = products.find((product) => parseInt(product.id) === parseInt(id));
   const {fields} = queryParam;
   if(fields){
-    return productWithFileds(fields, productFind);
+    return productWithFields(fields, productFind);
   }
   return productFind;
 }

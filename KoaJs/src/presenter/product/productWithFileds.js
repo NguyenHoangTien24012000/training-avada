@@ -1,4 +1,4 @@
-export function productWithFileds(fields, productCurrent){
+export function productWithFields(fields, productCurrent){
     const arrFields = fields.split(',');
     const productWithFields = {};
     arrFields.forEach(field => {
