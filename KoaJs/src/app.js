@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import koaBody from 'koa-body';
 import routesProducts from './routes/productRoutes';
+import routesTask from './routes/taskRoutes'
 
 //run app
 const app = new Koa();

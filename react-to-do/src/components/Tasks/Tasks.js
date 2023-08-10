@@ -8,5 +8,5 @@ function tasks(props) {
     </>
   );
 }
-
-export const Tasks = HocComponentTaskList(tasks, false);
+const statusListTaskCurrent = false;
+export const Tasks = HocComponentTaskList(tasks, statusListTaskCurrent);

@@ -8,5 +8,5 @@ function tasksComplete(props) {
     </>
   );
 }
-
-export const TasksComplete = HocComponentTaskList(tasksComplete, true);
+const statusListTaskCurrent = true;
+export const TasksComplete = HocComponentTaskList(tasksComplete, statusListTaskCurrent);
