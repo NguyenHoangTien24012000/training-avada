@@ -7,9 +7,10 @@ import { productWithFields } from "../presenter/product/productWithFileds";
 
 export function getAllProducts(queryParam) {
   const {limit, sort} = queryParam;
+  const newProduct = [...products];
   let dataProduct = [];
   if(sort){
-    dataProduct = sortProductCreatedAt(products, sort);
+    dataProduct = sortProductCreatedAt(newProduct, sort);
   }
   if(limit){
     dataProduct = dataProduct.slice(0, parseInt(limit));

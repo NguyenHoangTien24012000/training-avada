@@ -7,6 +7,7 @@ import {
   handleUpdateProduct,
 } from "../handlers/product/productHandlers";
 import { productInputMiddleware } from "../middleware/productInputMiddleware";
+Í
 // Prefix all routes with /products
 const router = new Router({
   prefix: "/api",

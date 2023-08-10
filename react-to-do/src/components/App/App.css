@@ -1,0 +1,43 @@
+.app {
+  background: #209cee;
+  padding: 30px;
+  height: 100vh;
+
+}
+.app-title {
+  display: flex;
+  justify-content: center;
+  color: darkblue;
+}
+.app-container {
+  align-items: center;
+  width: 60%;
+}
+.app-main {
+  display: flex;
+  justify-content: center;
+}
+
+.todo-list {
+  background: #e8e8e8;
+  border-radius: 4px;
+  max-width: 100%;
+  padding: 5px;
+
+}
+
+.btn-complete-selected {
+  background-color: #b2a4c0;
+}
+.btn-delete-selected {
+  background-color: #a66161;
+}
+.btn-selected {
+  padding: 5px;
+  margin: 10px;
+}
+
+button{
+  cursor: pointer;
+}
+
