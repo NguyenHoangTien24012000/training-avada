@@ -12,7 +12,7 @@ export default function Task({props}) {
         setCheckInput
       } = props
 
-    const [ state,dispatch] = useStore();
+    const [ state, dispatch] = useStore();
 
   function handleChangeInput(e) {
     const id = parseInt(e.target.value);

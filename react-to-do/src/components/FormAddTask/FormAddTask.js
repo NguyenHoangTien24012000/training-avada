@@ -5,6 +5,7 @@ import { actions } from "../../Reducer/Tasks";
 import * as taskApi from "../../utils/api/taskApi";
 
 export default function FormAddTask() {
+  
   const [task, setTask] = useState("");
 
   const [state, dispatch] = useStore();
@@ -14,10 +15,9 @@ export default function FormAddTask() {
   const inputRef = useRef(null);
 
   function handleChange(event) {
-    if(event.target.value){
+    setErrorInput(true);
+    if (event.target.value) {
       setErrorInput(false);
-    }else{
-      setErrorInput(true);
     }
     setTask(event.target.value);
   }
@@ -29,9 +29,9 @@ export default function FormAddTask() {
       setErrorInput(true);
       return;
     }
-    taskApi.addNewTask(task, ()=>{
+    taskApi.addNewTask(task, () => {
       dispatch(actions.addTask(task));
-    })
+    });
     setTask("");
     inputRef.current.focus();
   }
