@@ -16,34 +16,26 @@ export default (state = initialState, { type, payload }) => {
       return [...state, { id: Date.now(), name: nameTask, isCompleted: false }];
     case CHANGE_STATUS:
       const { id } = payload;
-      const indexComplete = state.findIndex((task) => task.id === id);
-      const {isCompleted} = state[indexComplete];
-      state[indexComplete].isCompleted = !isCompleted;
-      return [...state];
+      return state.map(task =>
+        task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
+      );
     case DELETE_TASK:
       const { idDelete } = payload;
-      let indexDelete = state.findIndex((task) => task.id === idDelete);
-      state.splice(indexDelete, 1);
-      return [...state];
+      return state.filter(task => task.id !== idDelete);
     case CHANGE_STATUS_MULTI_TASK:
       const { arrIdChangeStatus, statusCurrent } = payload;
-      const arrTaskComplete = state.map((task) => {
-        if (arrIdChangeStatus.includes(task.id)) {
-          return { ...task, isCompleted: !statusCurrent };
-        }
-        return task;
-      });
-      return arrTaskComplete;
-    case DELETE_MULTI_TASK:
-      let { arrIdDelete } = payload;
-      const arrTaskDeleted = state.filter(
-        (task) => !arrIdDelete.includes(task.id)
+      return state.map(task =>
+        arrIdChangeStatus.includes(task.id)
+          ? { ...task, isCompleted: !statusCurrent }
+          : task
       );
-      return arrTaskDeleted;
+    case DELETE_MULTI_TASK:
+      const { arrIdDelete } = payload;
+      return state.filter(task => !arrIdDelete.includes(task.id));
     case GET_ALL_TASK:
-      const {allTasks} = payload;
+      const { allTasks } = payload;
       return [...allTasks];
     default:
-      throw new Error("Invalid action");
+      return state;
   }
 };
