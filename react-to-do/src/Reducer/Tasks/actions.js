@@ -7,10 +7,10 @@ export const addTask = nameTask =>{
     }
 }
 
-export const getAllTask = () =>{
+export const getAllTask = (allTasks) =>{    
     return {
         type : GET_ALL_TASK,
-        payload : {}
+        payload : {allTasks}
     }
 }
 
@@ -28,10 +28,10 @@ export const changeStatusMultiTask = (arrIdChangeStatus, statusCurrent) =>{
     }
 }
 
-export const changeStatusTask = (id, isCompleted) =>{
+export const changeStatusTask = (id) =>{
     return {
         type: CHANGE_STATUS,
-        payload : {id, isCompleted}
+        payload : {id}
     }
 }
 

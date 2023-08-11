@@ -1,7 +1,8 @@
-import React, { useState, useRef, useLayoutEffect } from "react";
-import "./Tasks.css";
-import { useStore } from "../../store/Task/index";
-import { actions } from "../../Reducer/Tasks/index";
+import React, { useState, useRef } from "react";
+import "./FormAddTask.css";
+import { useStore } from "../../context/Task/index";
+import { actions } from "../../Reducer/Tasks";
+import * as taskApi from "../../utils/api/taskApi";
 
 export default function FormAddTask() {
   const [task, setTask] = useState("");
@@ -28,7 +29,9 @@ export default function FormAddTask() {
       setErrorInput(true);
       return;
     }
-    dispatch(actions.addTask(task));
+    taskApi.addNewTask(task, ()=>{
+      dispatch(actions.addTask(task));
+    })
     setTask("");
     inputRef.current.focus();
   }

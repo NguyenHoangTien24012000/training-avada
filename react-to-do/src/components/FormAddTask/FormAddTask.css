@@ -1,0 +1,23 @@
+.task-new--text{
+  font-size: 18px;
+  color: blue;
+}
+
+.input-new-task{
+  width: 65%;
+  height: 34px;
+  margin: 10px;
+  font-size: 15px;
+}
+
+.button-add-task{
+  width: 70px;
+  height: 40px;
+  background-color: #69b869;
+}
+
+.text-error{
+  margin: 0 0 10px 82px;
+  color: red;
+  font-size: 17px;
+}

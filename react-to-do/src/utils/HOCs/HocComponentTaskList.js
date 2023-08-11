@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { useStore } from "../../store/Task";
+import { useStore } from "../../context/Task/index";
 import { actions } from "../../Reducer/Tasks";
+import * as taskApi from "../api/taskApi";
+import Task from "../../components/Task/Task";
 
 export function HocComponentTaskList(WrappedComponent, statusListTaskCurrent) {
   const TaskList = (props) => {
@@ -12,66 +14,35 @@ export function HocComponentTaskList(WrappedComponent, statusListTaskCurrent) {
       event.preventDefault();
     }
 
-    function changeStatusTask(id, isCompleted) {
-      dispatch(actions.changeStatusTask(id, isCompleted));
-    }
-
-    function deleteTask(id) {
-      dispatch(actions.deleteTask(id));
-    }
-
-    function handleChangeInput(e) {
-      const id = parseInt(e.target.value);
-      setCheckInput((prev) => {
-        if (checkInput.includes(id)) {
-          return prev.filter((item) => item !== id);
-        }
-        return [...prev, id];
+    function submitChangeStatusMultiTask() {
+      const statusCurrent = statusListTaskCurrent;
+      taskApi.changeMultipleTask(checkInput, statusCurrent, () => {
+        dispatch(actions.changeStatusMultiTask(checkInput, statusCurrent));
+        setCheckInput([]);
       });
     }
 
-    function submitChangeStatusMultiTask() {
-      const statusCurrent = statusListTaskCurrent;
-      dispatch(actions.changeStatusMultiTask(checkInput, statusCurrent));
-      setCheckInput([]);
+    function submitDeleteStatusMultiTask() {
+      taskApi.deleteMultipleTask(checkInput, () => {
+        dispatch(actions.deleteMultiTask(checkInput));
+        setCheckInput([]);
+      });
     }
 
-    function submitDeleteStatusMultiTask(){
-      dispatch(actions.deleteMultiTask(checkInput));
-      setCheckInput([]);
-    }
-
-    const listTask = state.filter((task) => task.isCompleted === statusListTaskCurrent);
+    const listTask = state.filter(
+      (task) => task.isCompleted === statusListTaskCurrent
+    );
 
     function renderTasks() {
       return listTask.map((task, index) => {
         return (
-          <div key={index}>
-            <div className={statusListTaskCurrent ? "todo todo-success" : "todo todo-wait" }>
-              <div className="content-todo-left">
-                <input
-                  type="checkbox"
-                  value={task.id}
-                  checked={checkInput.includes(task.id)}
-                  onChange={(e) => handleChangeInput(e)}></input>
-                <label htmlFor="" className="todo-content">
-                  {task.name}
-                </label>
-              </div>
-              <div className="content-todo-right">
-                <button
-                  className="btn-complete"
-                  onClick={() => changeStatusTask(task.id, task.isCompleted)}>
-                  {statusListTaskCurrent ? "UnComplete" : "Complete"}
-                </button>
-                <button
-                  className="btn-delete"
-                  onClick={() => deleteTask(task.id)}>
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
+          <Task key={index}
+            props={{
+              task,
+              statusListTaskCurrent,
+              checkInput,
+              setCheckInput,
+            }}></Task>
         );
       });
     }
@@ -94,7 +65,9 @@ export function HocComponentTaskList(WrappedComponent, statusListTaskCurrent) {
                 className="btn-complete-selected btn-selected"
                 style={{ cursor: "not-allowed" }}
                 disabled>
-                 {statusListTaskCurrent ? "Uncomplete selected" : "Complete selected"}
+                {statusListTaskCurrent
+                  ? "Uncomplete selected"
+                  : "Complete selected"}
               </button>
               <button
                 type="submit"
@@ -110,7 +83,9 @@ export function HocComponentTaskList(WrappedComponent, statusListTaskCurrent) {
                 type="submit"
                 className="btn-complete-selected btn-selected"
                 onClick={() => submitChangeStatusMultiTask()}>
-                {statusListTaskCurrent ? "Uncomplete selected" : "Complete selected"}
+                {statusListTaskCurrent
+                  ? "Uncomplete selected"
+                  : "Complete selected"}
               </button>
               <button
                 type="submit"
