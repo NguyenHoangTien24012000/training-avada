@@ -6,7 +6,7 @@ export async function getAllTask(callBack) {
     const { data } = res.data;
     callBack(data);
   } catch (error) {
-    throw new Error("Get all task failed ", error.message);
+    console.error("Get all task failed ", error.message);
   }
 }
 
@@ -16,7 +16,7 @@ export async function addNewTask(task, callBack) {
     const { data } = res;
     callBack(data);
   } catch (error) {
-    throw new Error("Add task failed ", error.message);
+    console.error("Add task failed ", error.message);
   }
 }
 
@@ -26,7 +26,7 @@ export async function changeStatusTask(id, callBack) {
     const { data } = res;
     callBack(data);
   } catch (error) {
-    throw new Error("Change status failed ", error.message);
+    console.error("Change status failed ", error.message);
   }
 }
 
@@ -36,7 +36,7 @@ export function deleteTask(id, callBack) {
     const { data } = res;
     callBack(data);
   } catch (error) {
-    throw new Error("Delete task failed ", error.message);
+    console.error("Delete task failed ", error.message);
   }
 }
 
@@ -52,7 +52,7 @@ export async function changeMultipleTask(arrId, statusCurrent, callBack) {
     const { data } = res;
     callBack(data);
   } catch (error) {
-    throw new Error("Update task failed ", error.message);
+    console.error("Update task failed ", error.message);
   }
 }
 
@@ -67,6 +67,6 @@ export async function deleteMultipleTask(arrId, callBack) {
     const { data } = res;
     callBack(data);
   } catch (error) {
-    throw new Error("Update task failed ", error.message);
+    console.error("Update task failed ", error.message);
   }
 }

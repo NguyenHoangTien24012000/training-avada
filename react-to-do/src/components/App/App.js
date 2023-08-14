@@ -4,6 +4,8 @@ import FormAddTask from "../FormAddTask/FormAddTask";
 import { TasksList } from "../TasksList/TasksList";
 import { TasksListComplete } from "../TasksList/TasksListComplete";
 import * as taskApi from "../../utils/api/taskApi";
+import { AppProvider } from "@shopify/polaris";
+import "@shopify/polaris/dist/styles.css";
 
 export default function App() {
 
@@ -16,6 +18,7 @@ export default function App() {
   }, []);
   return (
     <div className="app">
+  
       <h1 className="app-title">To Do App</h1>
       <div className="app-main">
         <div className="app-container">
@@ -34,3 +37,6 @@ export default function App() {
     </div>
   );
 }
+
+
+
