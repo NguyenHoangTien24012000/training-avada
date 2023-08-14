@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import FormAddTask from "../FormAddTask/FormAddTask";
 import { TasksList } from "../TasksList/TasksList";
 import { TasksListComplete } from "../TasksList/TasksListComplete";
-import { useStore } from "../../context/Task/index";
-import { actions } from "../../Reducer/Tasks";
 import * as taskApi from "../../utils/api/taskApi";
 
 export default function App() {
-  const [state, dispatch] = useStore();
+
+  const [tasks, setTasks] = useState([]);
+
   useEffect(() => {
     taskApi.getAllTask((data) => {
-      dispatch(actions.getAllTask(data));
+        setTasks(data)
     });
   }, []);
   return (
@@ -20,13 +20,13 @@ export default function App() {
       <div className="app-main">
         <div className="app-container">
           <div className="add-task">
-            <FormAddTask></FormAddTask>
+            <FormAddTask props={[tasks, setTasks]}></FormAddTask>
           </div>
           <div className="todo-list">
             <div>
-              <TasksList></TasksList>
+              <TasksList props={[tasks, setTasks]}></TasksList>
               <hr></hr>
-              <TasksListComplete></TasksListComplete>
+              <TasksListComplete props={[tasks, setTasks]}></TasksListComplete>
             </div>
           </div>
         </div>

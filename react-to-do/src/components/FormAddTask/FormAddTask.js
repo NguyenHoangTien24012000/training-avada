@@ -1,37 +1,40 @@
 import React, { useState, useRef } from "react";
 import "./FormAddTask.css";
-import { useStore } from "../../context/Task/index";
-import { actions } from "../../Reducer/Tasks";
 import * as taskApi from "../../utils/api/taskApi";
 
-export default function FormAddTask() {
-  const [task, setTask] = useState("");
+export default function FormAddTask({ props }) {
+  const [tasks, setTasks] = props;
 
-  const [state, dispatch] = useStore();
+  const [nameTask, setNameTask] = useState("");
 
   const [errorInput, setErrorInput] = useState(false);
 
   const inputRef = useRef(null);
 
   function handleChange(event) {
-    setErrorInput(true);
     if (event.target.value.trim()) {
       setErrorInput(false);
+    } else {
+      setErrorInput(true);
     }
-    setTask(event.target.value);
+    setNameTask(event.target.value);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (!task) {
+    if (errorInput) {
       inputRef.current.focus();
-      setErrorInput(true);
       return;
     }
-    taskApi.addNewTask(task, () => {
-      dispatch(actions.addTask(task));
+    const lengthId = 10;
+    const id = Math.random()
+      .toString(36)
+      .substring(2, lengthId + 2);
+    const newTask = { id, name: nameTask, isCompleted: false };
+    taskApi.addNewTask({task: newTask}, () => {
+      setTasks([...tasks, newTask]);
     });
-    setTask("");
+    setNameTask("");
     inputRef.current.focus();
   }
 
@@ -43,7 +46,7 @@ export default function FormAddTask() {
       <input
         ref={inputRef}
         type="text"
-        value={task}
+        value={nameTask}
         className="input-new-task"
         onChange={handleChange}></input>
       <button type="submit" className="button-add-task">

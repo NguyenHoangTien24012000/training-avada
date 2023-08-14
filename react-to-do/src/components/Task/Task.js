@@ -1,21 +1,19 @@
 import React from "react";
 import "./Task.css";
 import * as taskApi from '../../utils/api/taskApi';
-import { useStore } from "../../context/Task";
-import { actions } from "../../Reducer/Tasks";
 
 export default function Task({props}) {
     const {
         task,
+        setTasks,
         statusListTaskCurrent,
         checkInput,
         setCheckInput
       } = props
 
-    const [ state, dispatch] = useStore();
 
   function handleChangeInput(e) {
-    const id = parseInt(e.target.value);
+    const id = e.target.value;
     setCheckInput((prev) => {
       if (checkInput.includes(id)) {
         return prev.filter((item) => item !== id);
@@ -24,16 +22,16 @@ export default function Task({props}) {
     });
   }
 
+
   function changeStatusTask(id) {
-    taskApi.changeStatusTask(id, ()=>{
-        console.log("-------", id)
-      dispatch(actions.changeStatusTask(id));
+    taskApi.changeStatusTask(id, (data)=>{
+      setTasks((prev) => prev.map(task => task.id === id ? {...task, isCompleted : !statusListTaskCurrent} : task));
     })
   }
 
   function deleteTask(id) {
     taskApi.deleteTask(id, ()=>{
-      dispatch(actions.deleteTask(id));
+      setTasks((prev) => prev.filter(task => task.id !== id));
     })
   }
 
@@ -46,7 +44,7 @@ export default function Task({props}) {
         <div className="content-todo-left">
           <input
             type="checkbox"
-            value={task?.id}
+            value={task.id}
             checked={checkInput.includes(task.id)}
             onChange={(e) => handleChangeInput(e)}></input>
           <label htmlFor="" className="todo-content">

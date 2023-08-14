@@ -4,12 +4,9 @@ import fs from "fs";
 export function getAllTasks() {
   return tasks;
 }
-import crypto from "crypto";
 
 export function addTask(task) {
-  const id = crypto.randomBytes(16).toString("hex");
-  const newTask = { id, name: task, isCompleted: false };
-  const tasksUpdate = [...tasks, newTask];
+  const tasksUpdate = [...tasks, task];
   fs.writeFileSync(
     path.join(__dirname, "tasks.json"),
     JSON.stringify(tasksUpdate)
@@ -18,7 +15,7 @@ export function addTask(task) {
 
 export function changeStatusTask(id) {
   const newTasks = tasks.map((task) => {
-    return task.id === parseInt(id)
+    return task.id === id
       ? { ...task, isCompleted: !task.isCompleted }
       : task;
   });
@@ -29,7 +26,7 @@ export function changeStatusTask(id) {
 }
 
 export function deleteTask(id) {
-  const newTasks = tasks.filter((task) => task.id !== parseInt(id));
+  const newTasks = tasks.filter((task) => task.id !== id);
   fs.writeFileSync(
     path.join(__dirname, "tasks.json"),
     JSON.stringify(newTasks)

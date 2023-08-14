@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useStore } from "../../context/Task/index";
-import { actions } from "../../Reducer/Tasks";
 import * as taskApi from "../api/taskApi";
 import Task from "../../components/Task/Task";
 
 export function HocComponentTaskList(WrappedComponent, statusListTaskCurrent) {
-  const TaskList = (props) => {
-    const [state, dispatch] = useStore();
+  const TaskList = ({props}) => {
+
+    const [tasks, setTasks] = props;
 
     const [checkInput, setCheckInput] = useState([]);
 
@@ -16,20 +15,20 @@ export function HocComponentTaskList(WrappedComponent, statusListTaskCurrent) {
 
     function submitChangeStatusMultiTask() {
       const statusCurrent = statusListTaskCurrent;
-      taskApi.changeMultipleTask(checkInput, statusCurrent, () => {
-        dispatch(actions.changeStatusMultiTask(checkInput, statusCurrent));
+      taskApi.changeMultipleTask(checkInput, statusCurrent, (data) => {
+        setTasks(prevTasks=> prevTasks.map(task => checkInput.includes(task.id) ? {...task, isCompleted : !statusCurrent} : task));
         setCheckInput([]);
       });
     }
 
     function submitDeleteStatusMultiTask() {
       taskApi.deleteMultipleTask(checkInput, () => {
-        dispatch(actions.deleteMultiTask(checkInput));
+        setTasks(prevTasks => prevTasks.filter(task => !checkInput.includes(task.id)));
         setCheckInput([]);
       });
     }
 
-    const listTask = state.filter(
+    const listTask = tasks.filter(
       (task) => task.isCompleted === statusListTaskCurrent
     );
 
@@ -39,6 +38,7 @@ export function HocComponentTaskList(WrappedComponent, statusListTaskCurrent) {
           <Task key={index}
             props={{
               task,
+              setTasks,
               statusListTaskCurrent,
               checkInput,
               setCheckInput,
