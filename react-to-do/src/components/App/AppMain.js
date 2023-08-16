@@ -7,8 +7,9 @@ import { TasksListCompleteNew } from "../TasksList/TasksListCompleteNew";
 import useFetchToDo from "../../hooks/useFetchToDo";
 
 export default function AppMain() {
-
+  //@hoangtien các biến k sử dụng xóa đi nha
   const [tasks, setTasks, loading] = useFetchToDo();
+  ///@hoangtien nên truyền props ntn tasks={tasks} setTasks={setTasks}
 
   return (
     <Page>
@@ -16,9 +17,8 @@ export default function AppMain() {
         <Layout.Section>
           <Card sectioned>
             <AddTask props={[tasks, setTasks]} />
-            <TasksListNew props={[tasks, setTasks]}/>
-           
-            <TasksListCompleteNew props={[tasks, setTasks]}/>
+            <TasksListNew props={[tasks, setTasks]} />
+            <TasksListCompleteNew props={[tasks, setTasks]} />
           </Card>
         </Layout.Section>
       </Layout>
