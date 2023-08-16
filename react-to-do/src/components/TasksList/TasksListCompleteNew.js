@@ -1,6 +1,6 @@
 import React from "react";
 import "./TaskList.css";
-import { HocComponentTaskList } from "../../utils/HOCs/HocNew";
+import { HocComponentTaskList } from "../../utils/HOCs/HocComponentTaskList";
 import { Page } from "@shopify/polaris";
 
 function tasksListComplete(props) {

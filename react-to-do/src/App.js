@@ -5,8 +5,16 @@ import AppLayout from "./layout/AppLayout";
 
 export default function App() {
   return (
-    //@hoangtien b tìm hiểu xem AppProvider có những prop gì rồi sử dụng nhá
-    <AppProvider>
+    // @hoangtien b tìm hiểu xem AppProvider có những prop gì rồi sử dụng nhá
+    <AppProvider
+      theme={{
+        logo: {
+          width: 105,
+          topBarSource: "https://cdn1.avada.io/logo/avada_logo_final_color.png",
+          url: "/",
+          accessibilityLabel: "AVADA",
+        },
+      }}>
       <AppLayout></AppLayout>
     </AppProvider>
   );

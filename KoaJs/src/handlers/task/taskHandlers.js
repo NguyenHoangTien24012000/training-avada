@@ -27,10 +27,11 @@ export function handleGetAllTasks(ctx) {
 export function handleAddTask(ctx) {
   try {
     const { task } = ctx.request.body;
-    addTask(task);
+    const newTask = addTask(task);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
+      data : newTask,
       message: "Add success!",
     });
   } catch (error) {
