@@ -1,18 +1,9 @@
 import axios from "axios";
-
-export async function getAllTask(callBack) {
-  try {
-    const res = await axios.get("http://localhost:8080/api/tasks");
-    const { data } = res.data;
-    callBack(data);
-  } catch (error) {
-    console.error("Get all task failed ", error.message);
-  }
-}
+import { URL_BASE } from "../../config/constants";
 
 export async function addNewTask(task, callBack) {
   try {
-    const res = await axios.post("http://localhost:8080/api/tasks", task);
+    const res = await axios.post(`${URL_BASE}/tasks`, task);
     const { data } = res;
     callBack(data);
   } catch (error) {
@@ -22,7 +13,7 @@ export async function addNewTask(task, callBack) {
 
 export async function changeStatusTask(id, callBack) {
   try {
-    const res = await axios.put(`http://localhost:8080/api/tasks/${id}`);
+    const res = await axios.put(`${URL_BASE}/tasks/${id}`);
     const { data } = res;
     callBack(data);
   } catch (error) {
@@ -32,7 +23,7 @@ export async function changeStatusTask(id, callBack) {
 
 export function deleteTask(id, callBack) {
   try {
-    const res = axios.delete(`http://localhost:8080/api/tasks/${id}`);
+    const res = axios.delete(`${URL_BASE}/tasks/${id}`);
     const { data } = res;
     callBack(data);
   } catch (error) {
@@ -42,13 +33,10 @@ export function deleteTask(id, callBack) {
 
 export async function changeMultipleTask(arrId, statusCurrent, callBack) {
   try {
-    const res = await axios.put(
-      "http://localhost:8080/api/tasks/multiple/change",
-      {
-        arrId,
-        statusCurrent,
-      }
-    );
+    const res = await axios.put(`${URL_BASE}/tasks/multiple/change`, {
+      arrId,
+      statusCurrent,
+    });
     const { data } = res;
     callBack(data);
   } catch (error) {
@@ -58,12 +46,9 @@ export async function changeMultipleTask(arrId, statusCurrent, callBack) {
 
 export async function deleteMultipleTask(arrId, callBack) {
   try {
-    const res = await axios.delete(
-      "http://localhost:8080/api/tasks/multiple/delete",
-      {
-        data: { arrId: arrId },
-      }
-    );
+    const res = await axios.delete(`${URL_BASE}/tasks/multiple/delete`, {
+      data: { arrId: arrId },
+    });
     const { data } = res;
     callBack(data);
   } catch (error) {

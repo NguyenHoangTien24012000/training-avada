@@ -6,7 +6,7 @@ import {
   Page,
   TextField,
 } from "@shopify/polaris";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import * as taskApi from "../../utils/api/taskApi";
 
 export default function AddTask({ props }) {
@@ -18,7 +18,6 @@ export default function AddTask({ props }) {
 
   const [tasks, setTasks] = props;
 
-  const inputRef = useRef(null);
 
   const handleOpen = useCallback(() => {
     if(open){

@@ -27,6 +27,7 @@ export default function TaskNew({ props }) {
       );
       setLoadingComplete(false);
     });
+    
   }
 
   function deleteTask(id) {
@@ -35,33 +36,34 @@ export default function TaskNew({ props }) {
       setTasks((prev) => prev.filter((task) => task.id !== id));
       setLoadingDelete(false);
     });
+    
   }
 
   return (
-      <ResourceItem id={id} key={id}>
-        <Stack distribution="equalSpacing">
-          <TextStyle>{name}</TextStyle>
-          <ButtonGroup>
-            {statusListTaskCurrent ? (
-              <Badge status="success">Done </Badge>
-            ) : (
-              <Badge status="new">Pending</Badge>
-            )}
-            <Button
-              onClick={() => changeStatusTask(id)}
-              loading={loadingComplete}>
-              {isCompleted ? "Undo" : "Complete"}
-            </Button>
-            <Button
-              destructive
-              onClick={() => {
-                deleteTask(id);
-              }}
-              loading={loadingDelete}>
-              Delete
-            </Button>
-          </ButtonGroup>
-        </Stack>
-      </ResourceItem>
+    <ResourceItem id={id} key={id}>
+      <Stack distribution="equalSpacing">
+        <TextStyle>{name}</TextStyle>
+        <ButtonGroup>
+          {statusListTaskCurrent ? (
+            <Badge status="success">Done </Badge>
+          ) : (
+            <Badge status="new">Pending</Badge>
+          )}
+          <Button
+            onClick={() => changeStatusTask(id)}
+            loading={loadingComplete}>
+            {isCompleted ? "Undo" : "Complete"}
+          </Button>
+          <Button
+            destructive
+            onClick={() => {
+              deleteTask(id);
+            }}
+            loading={loadingDelete}>
+            Delete
+          </Button>
+        </ButtonGroup>
+      </Stack>
+    </ResourceItem>
   );
 }

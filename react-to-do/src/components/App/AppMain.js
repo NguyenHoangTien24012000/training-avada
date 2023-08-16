@@ -1,18 +1,14 @@
-import { Button, Layout, Page, PageActions, Card, TextStyle } from "@shopify/polaris";
-import React, { useEffect, useState } from "react";
+import { Layout, Page, Card } from "@shopify/polaris";
+import React from "react";
 import AddTask from "../FormAddTask/AddTask";
 import { TasksListNew } from "../TasksList/TasksListNew";
 import * as taskApi from "../../utils/api/taskApi";
 import { TasksListCompleteNew } from "../TasksList/TasksListCompleteNew";
+import useFetchToDo from "../../hooks/useFetchToDo";
 
 export default function AppMain() {
-  const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    taskApi.getAllTask((data) => {
-        setTasks(data)
-    });
-  }, []);
+  const [tasks, setTasks, loading] = useFetchToDo();
 
   return (
     <Page>
