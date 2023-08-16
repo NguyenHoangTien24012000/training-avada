@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import * as taskApi from "../api/taskApi";
 import { Card, ResourceList } from "@shopify/polaris";
 import Task from "../../components/Task/Task";
 import { TasksListEmpty } from "../../components/TasksList/TasksListEmpty";
