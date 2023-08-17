@@ -65,10 +65,11 @@ export function HocComponentTaskList(WrappedComponent, statusCurrent) {
       handleDelete({ data, deleteSuccess });
     };
 
-    const listTasks = [
+    const listActions = [
       {
         content: statusCurrent ? "Undo tasks" : "Complete tasks",
         onAction: changeMultipleTask,
+
       },
       {
         content: "Delete tasks",
@@ -87,12 +88,13 @@ export function HocComponentTaskList(WrappedComponent, statusCurrent) {
           <TasksListEmpty />
         ) : (
           <ResourceList
+            loading={putting || deleting}
             resourceName={resourceName}
             items={tasksFilter}
             renderItem={renderItem}
             selectedItems={selectedTasks}
             onSelectionChange={setSelectedTasks}
-            promotedBulkActions={listTasks}
+            promotedBulkActions={listActions}
           />
         )}
       </Card>

@@ -17,20 +17,16 @@ export default function App(props) {
           Add Task
         </Button>
       }>
-      <Layout>
-        <Layout.Section>
-          <Card sectioned>
-            <FormAddTask
-              openForm={openForm}
-              setOpenForm={setOpenForm}
-              tasks={tasks}
-              setTasks={setTasks}
-            />
-            <TasksListNew tasks={tasks} setTasks={setTasks} />
-            <TasksListCompleteNew tasks={tasks} setTasks={setTasks} />
-          </Card>
-        </Layout.Section>
-      </Layout>
+      <Card sectioned>
+        <FormAddTask
+          openForm={openForm}
+          setOpenForm={setOpenForm}
+          tasks={tasks}
+          setTasks={setTasks}
+        />
+        <TasksListNew tasks={tasks} setTasks={setTasks} />
+        <TasksListCompleteNew tasks={tasks} setTasks={setTasks} />
+      </Card>
     </Page>
   );
 }
