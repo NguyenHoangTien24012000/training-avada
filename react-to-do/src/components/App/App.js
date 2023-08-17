@@ -4,11 +4,11 @@ import FormAddTask from "../FormAddTask/FormAddTask";
 import { TasksListNew } from "../TasksList/TasksListNew";
 import { TasksListCompleteNew } from "../TasksList/TasksListCompleteNew";
 
-export default function App(props) {
-  //@hoangtien các biến k sử dụng xóa đi nha
-  ///@hoangtien nên truyền props ntn tasks={tasks} setTasks={setTasks}
+export default function App({ tasks, setTasks }) {
   const [openForm, setOpenForm] = useState(false);
-  const { tasks, setTasks } = props;
+  //@hoangtien 2 cái này https://i.imgur.com/ilemWGy.png mình thấy nó giống nhau có thể sử dụng chung HocComponentTaskList luôn chỉ cần truyền prop khác thôi ý k cần ntn đâu.
+  // <Card/> cũng có title k cần h1 đâu b. Project của mình khuyển khích dùng component của polaris
+  // Với xóa mấy cái import k dùng b xóa đi nhá
   return (
     <Page
       title="Todo list"
@@ -16,7 +16,8 @@ export default function App(props) {
         <Button primary onClick={() => setOpenForm(true)}>
           Add Task
         </Button>
-      }>
+      }
+    >
       <Card sectioned>
         <FormAddTask
           openForm={openForm}

@@ -5,11 +5,9 @@ import { TasksListEmpty } from "../../components/TasksList/TasksListEmpty";
 import { useFetchDelete } from "../../hooks/useFetchDelete";
 import { BASE_URL } from "../../config/constantsApi";
 import { useFetchPut } from "../../hooks/useFetchPut";
-// import { useFetchData } from "../../hooks/useFetchGet";
-// import { BASE_URL } from "../../config/constantsApi";
 
 export function HocComponentTaskList(WrappedComponent, statusCurrent) {
-  const TaskList = (props) => {
+  const TaskList = props => {
     const { tasks, setTasks } = props;
 
     const [selectedTasks, setSelectedTasks] = useState([]);
@@ -34,12 +32,13 @@ export function HocComponentTaskList(WrappedComponent, statusCurrent) {
           id={id}
           name={name}
           isCompleted={isCompleted}
-          setTasks={setTasks}></Task>
+          setTasks={setTasks}
+        />
       );
     }
     const updateSuccess = () => {
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
           selectedTasks.includes(task.id)
             ? { ...task, isCompleted: !statusCurrent }
             : task
@@ -54,14 +53,14 @@ export function HocComponentTaskList(WrappedComponent, statusCurrent) {
     };
 
     const deleteSuccess = () => {
-      setTasks((prevTasks) => {
-        return prevTasks.filter((task) => !selectedTasks.includes(task.id));
+      setTasks(prevTasks => {
+        return prevTasks.filter(task => !selectedTasks.includes(task.id));
       });
       setSelectedTasks([]);
     };
 
     const deleteMultipleTask = () => {
-      const data = {arrId : selectedTasks}
+      const data = { arrId: selectedTasks };
       handleDelete({ data, deleteSuccess });
     };
 
@@ -69,7 +68,6 @@ export function HocComponentTaskList(WrappedComponent, statusCurrent) {
       {
         content: statusCurrent ? "Undo tasks" : "Complete tasks",
         onAction: changeMultipleTask,
-
       },
       {
         content: "Delete tasks",
@@ -78,7 +76,7 @@ export function HocComponentTaskList(WrappedComponent, statusCurrent) {
     ];
 
     const tasksFilter = tasks.filter(
-      (task) => task.isCompleted === statusCurrent
+      task => task.isCompleted === statusCurrent
     );
 
     return (

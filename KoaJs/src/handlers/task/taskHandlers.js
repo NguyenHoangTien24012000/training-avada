@@ -6,8 +6,9 @@ import {
   deleteTask,
   getAllTasks,
 } from "../../database/taskRepository";
-
-export function handleGetAllTasks(ctx) {
+const delay = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
+//@hoangtien b thử delay xem các loading chạy đã oke chưa nhá. Mình thấy cái get mới có empty chưa có loading
+export async function handleGetAllTasks(ctx) {
   try {
     const allTasks = getAllTasks();
     return (ctx.body = {
@@ -24,14 +25,14 @@ export function handleGetAllTasks(ctx) {
   }
 }
 
-export function handleAddTask(ctx) {
+export async function handleAddTask(ctx) {
   try {
     const { task } = ctx.request.body;
     const newTask = addTask(task);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
-      data : newTask,
+      data: newTask,
       message: "Add success!",
     });
   } catch (error) {
