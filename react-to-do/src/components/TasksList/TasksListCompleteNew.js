@@ -3,14 +3,10 @@ import "./TaskList.css";
 import { HocComponentTaskList } from "../../utils/HOCs/HocComponentTaskList";
 
 function tasksListComplete(props) {
-  return (
-    <>
-      <h3 className="title-list">Tasks complete</h3>
-    </>
-  );
+  return <h1 className="title-list">Tasks done</h1>;
 }
 const statusListTaskCurrent = true;
-export const TasksListComplete = HocComponentTaskList(
-  tasksListComplete,
+export const TasksListCompleteNew = HocComponentTaskList(
+    tasksListComplete,
   statusListTaskCurrent
 );

@@ -1,4 +1,4 @@
-import * as newData from "../../database/FireStore/taskRepository";
+import * as newData from "../database/taskRepository";
 
 export async function handleGetAllTasks(ctx) {
   try {
@@ -19,12 +19,13 @@ export async function handleGetAllTasks(ctx) {
 
 export async function handleAddTask(ctx) {
   try {
-    const { task } = ctx.request.body;
+    
+    const { task } = ctx.req.body;
     const newTask = await newData.addTask(task);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
-      data: newTask,
+      data : newTask,
       message: "Add success!",
     });
   } catch (error) {
@@ -51,6 +52,7 @@ export async function handleChangeStatusTask(ctx) {
     return (ctx.body = {
       success: false,
       data: [],
+      error: error.message,
     });
   }
 }
@@ -68,13 +70,14 @@ export async function handleDeleteTask(ctx) {
     return (ctx.body = {
       success: false,
       data: [],
+      error: error.message,
     });
   }
 }
 
 export async function handleChangeMultipleStatus(ctx) {
   try {
-    const { arrId, statusCurrent } = ctx.request.body;
+    const { arrId, statusCurrent } = ctx.req.body;
     await newData.changeMultipleTask(arrId, statusCurrent);
     return (ctx.body = {
       success: true,
@@ -85,13 +88,14 @@ export async function handleChangeMultipleStatus(ctx) {
     return (ctx.body = {
       success: false,
       data: [],
+      error: error.message,
     });
   }
 }
 
 export async function handleDeleteMultiple(ctx) {
   try {
-    const { arrId } = ctx.request.body;
+    const { arrId } = ctx.req.body;
     await newData.deleteMultipleTask(arrId);
     return (ctx.body = {
       success: true,
@@ -102,6 +106,7 @@ export async function handleDeleteMultiple(ctx) {
     return (ctx.body = {
       success: false,
       data: [],
+      error: error.message,
     });
   }
 }

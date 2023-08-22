@@ -6,10 +6,10 @@ const router = new Router({
 })
 
 router.get('/tasks', handleGetAllTasks);
-router.post('/tasks', handleAddTask);
-router.put('/tasks/:id', handleChangeStatusTask);
-router.delete('/tasks/:id', handleDeleteTask);
-router.put('/tasks/multiple/change', handleChangeMultipleStatus);
-router.delete('/tasks/multiple/delete', handleDeleteMultiple)
+router.post('/task', handleAddTask);
+router.put('/task/:id', handleChangeStatusTask);
+router.delete('/task/:id', handleDeleteTask);
+router.put('/tasks', handleChangeMultipleStatus);
+router.delete('/tasks', handleDeleteMultiple)
 
 export default router;

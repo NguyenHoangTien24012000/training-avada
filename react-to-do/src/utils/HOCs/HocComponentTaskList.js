@@ -1,102 +1,106 @@
 import React, { useState } from "react";
-import { useStore } from "../../context/Task/index";
-import { actions } from "../../Reducer/Tasks";
-import * as taskApi from "../api/taskApi";
+import { Card, ResourceItem, ResourceList } from "@shopify/polaris";
 import Task from "../../components/Task/Task";
+import { TasksListEmpty } from "../../components/TasksList/TasksListEmpty";
+import { useFetchDelete } from "../../hooks/useFetchDelete";
+import { BASE_URL } from "../../config/constantsApi";
+import { useFetchPut } from "../../hooks/useFetchPut";
 
-export function HocComponentTaskList(WrappedComponent, statusListTaskCurrent) {
+
+export function HocComponentTaskList(WrappedComponent, statusCurrent) {
   const TaskList = (props) => {
-    const [state, dispatch] = useStore();
+    const { tasks, setTasks, getting } = props;
 
-    const [checkInput, setCheckInput] = useState([]);
+    // console.log("Getting", getting)
 
-    function handleSubmit(event) {
-      event.preventDefault();
-    }
+    const [selectedTasks, setSelectedTasks] = useState([]);
 
-    function submitChangeStatusMultiTask() {
-      const statusCurrent = statusListTaskCurrent;
-      taskApi.changeMultipleTask(checkInput, statusCurrent, () => {
-        dispatch(actions.changeStatusMultiTask(checkInput, statusCurrent));
-        setCheckInput([]);
-      });
-    }
-
-    function submitDeleteStatusMultiTask() {
-      taskApi.deleteMultipleTask(checkInput, () => {
-        dispatch(actions.deleteMultiTask(checkInput));
-        setCheckInput([]);
-      });
-    }
-
-    const listTask = state.filter(
-      (task) => task.isCompleted === statusListTaskCurrent
+    const { putting, handleUpdate } = useFetchPut(
+      BASE_URL + "/tasks"
+    );
+    const { deleting, handleDelete } = useFetchDelete(
+      BASE_URL + "/tasks"
     );
 
-    function renderTasks() {
-      return listTask.map((task, index) => {
-        return (
-          <Task key={index}
-            props={{
-              task,
-              statusListTaskCurrent,
-              checkInput,
-              setCheckInput,
-            }}></Task>
-        );
-      });
+    const resourceName = <div>test</div>;
+
+    function renderItem(task) {
+      const { id, name, isCompleted } = task;
+
+      return (
+        <ResourceItem id={id} key={id}>
+          <Task
+            id={id}
+            name={name}
+            isCompleted={isCompleted}
+            setTasks={setTasks}></Task>
+        </ResourceItem>
+      );
     }
+    const updateSuccess = () => {
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
+          selectedTasks.includes(task.id)
+            ? { ...task, isCompleted: !statusCurrent }
+            : task
+        )
+      );
+      setSelectedTasks([]);
+    };
+
+    const changeMultipleTask = () => {
+      const data = { arrId: selectedTasks, statusCurrent };
+      handleUpdate({ data, updateSuccess });
+    };
+
+    const deleteSuccess = () => {
+      setTasks(prevTasks => {
+        return prevTasks.filter(task => !selectedTasks.includes(task.id));
+      });
+      setSelectedTasks([]);
+    };
+
+    const deleteMultipleTask = () => {
+      const data = { arrId: selectedTasks };
+      handleDelete({ data, deleteSuccess });
+    };
+    
+    const listActions = [
+      {
+        content: selectedTasks.length + " Selected",
+        disabled : true
+      },
+      {
+        content: statusCurrent ? "Undo tasks" : "Complete tasks",
+        onAction: changeMultipleTask,
+      },
+      {
+        content: "Delete tasks",
+        onAction: deleteMultipleTask,
+      }
+    ];
+
+    const tasksFilter = tasks.filter(
+      task => task.isCompleted === statusCurrent
+    );
 
     return (
-      <>
-        <WrappedComponent {...props}></WrappedComponent>
-        <form onSubmit={handleSubmit}>
-          <div className="task-list">
-            {listTask.length === 0 ? (
-              <p className="text-empty">Task list empty...</p>
-            ) : (
-              renderTasks()
-            )}
-          </div>
-          {checkInput.length === 0 ? (
-            <div className="btn-group">
-              <button
-                type="submit"
-                className="btn-complete-selected btn-selected"
-                style={{ cursor: "not-allowed" }}
-                disabled>
-                {statusListTaskCurrent
-                  ? "Uncomplete selected"
-                  : "Complete selected"}
-              </button>
-              <button
-                type="submit"
-                className="btn-delete-selected btn-selected"
-                style={{ cursor: "not-allowed" }}
-                disabled>
-                Delete selected
-              </button>
-            </div>
-          ) : (
-            <div className="btn-group">
-              <button
-                type="submit"
-                className="btn-complete-selected btn-selected"
-                onClick={() => submitChangeStatusMultiTask()}>
-                {statusListTaskCurrent
-                  ? "Uncomplete selected"
-                  : "Complete selected"}
-              </button>
-              <button
-                type="submit"
-                className="btn-delete-selected btn-selected"
-                onClick={() => submitDeleteStatusMultiTask()}>
-                Delete selected
-              </button>
-            </div>
-          )}
-        </form>
-      </>
+      <Card>
+        <WrappedComponent {...props} />
+        {tasksFilter.length === 0 ? (
+          <TasksListEmpty />
+        ) : (
+          <ResourceList
+            loading={putting || deleting}
+            resourceName={resourceName}
+            items={tasksFilter}
+            renderItem={renderItem}
+            selectedItems={selectedTasks}
+            onSelectionChange={setSelectedTasks}
+            promotedBulkActions={listActions}
+          />
+        )}
+      </Card>
     );
   };
   return TaskList;

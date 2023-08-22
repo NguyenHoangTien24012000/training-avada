@@ -1,69 +1,64 @@
+import {
+  Badge,
+  Button,
+  ButtonGroup,
+  ResourceItem,
+  Stack,
+  TextStyle,
+} from "@shopify/polaris";
 import React from "react";
-import "./Task.css";
-import * as taskApi from '../../utils/api/taskApi';
-import { useStore } from "../../context/Task";
-import { actions } from "../../Reducer/Tasks";
+import { useFetchPut } from "../../hooks/useFetchPut";
+import { BASE_URL } from "../../config/constantsApi";
+import { useFetchDelete } from "../../hooks/useFetchDelete";
 
-export default function Task({props}) {
-    const {
-        task,
-        statusListTaskCurrent,
-        checkInput,
-        setCheckInput
-      } = props
+export default function Task(props) {
+  const { id, name, isCompleted, setTasks } = props;
 
-    const [ state, dispatch] = useStore();
+  const { putting, handleUpdate } = useFetchPut(BASE_URL + `/task/${id}`);
 
-  function handleChangeInput(e) {
-    const id = parseInt(e.target.value);
-    setCheckInput((prev) => {
-      if (checkInput.includes(id)) {
-        return prev.filter((item) => item !== id);
-      }
-      return [...prev, id];
-    });
+  const { deleting, handleDelete } = useFetchDelete(BASE_URL + `/task/${id}`);
+
+  const updateSuccess = () => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, isCompleted: !isCompleted } : task
+      )
+    );
+  };
+
+  async function changeStatusTask() {
+    await handleUpdate({ updateSuccess });
   }
 
-  function changeStatusTask(id) {
-    taskApi.changeStatusTask(id, ()=>{
-        console.log("-------", id)
-      dispatch(actions.changeStatusTask(id));
-    })
-  }
+  const deleteSuccess = () => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
 
-  function deleteTask(id) {
-    taskApi.deleteTask(id, ()=>{
-      dispatch(actions.deleteTask(id));
-    })
-  }
+  const deleteTask = async () => {
+    await handleDelete({ deleteSuccess });
+  };
 
   return (
-    <div key={task.id}>
-      <div
-        className={
-          statusListTaskCurrent ? "todo todo-success" : "todo todo-wait"
-        }>
-        <div className="content-todo-left">
-          <input
-            type="checkbox"
-            value={task?.id}
-            checked={checkInput.includes(task.id)}
-            onChange={(e) => handleChangeInput(e)}></input>
-          <label htmlFor="" className="todo-content">
-            {task?.name}
-          </label>
-        </div>
-        <div className="content-todo-right">
-          <button
-            className="btn-complete"
-            onClick={() => changeStatusTask(task.id)}>
-            {statusListTaskCurrent ? "UnComplete" : "Complete"}
-          </button>
-          <button className="btn-delete" onClick={() => deleteTask(task.id)}>
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
+    <Stack distribution="equalSpacing">
+      <TextStyle>{name}</TextStyle>
+      <ButtonGroup>
+        {isCompleted ? (
+          <Badge status="success">Done </Badge>
+        ) : (
+          <Badge status="new">Pending</Badge>
+        )}
+        <Button onClick={() => changeStatusTask()} loading={putting}>
+          {isCompleted ? "Undo" : "Complete"}
+        </Button>
+        <Button
+          destructive
+          onClick={() => {
+            deleteTask();
+          }}
+          loading={deleting}>
+          Delete
+        </Button>
+      </ButtonGroup>
+    </Stack>
   );
 }

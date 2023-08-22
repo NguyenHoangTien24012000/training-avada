@@ -1,4 +1,4 @@
-import { object, string, number, date, InferType } from 'yup';
+import { object, string, number, date, InferType } from "yup";
 
 export async function productInputMiddleware(ctx, next) {
   try {
@@ -12,12 +12,12 @@ export async function productInputMiddleware(ctx, next) {
       image: string().required(),
     });
     await schema.validate(data);
-    next();
+    return next();
   } catch (error) {
     ctx.status = 400;
     ctx.body = {
       success: false,
-      errors: error.message
+      errors: error.message,
     };
   }
 }

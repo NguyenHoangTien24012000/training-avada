@@ -1,55 +1,75 @@
-import React, { useState, useRef } from "react";
-import "./FormAddTask.css";
-import { useStore } from "../../context/Task/index";
-import { actions } from "../../Reducer/Tasks";
-import * as taskApi from "../../utils/api/taskApi";
+import { Form, FormLayout, Modal, Stack, TextField } from "@shopify/polaris";
+import React, { useCallback, useState } from "react";
+import { BASE_URL } from "../../config/constantsApi";
+import { useFetchPost } from "../../hooks/useFetchPost";
 
-export default function FormAddTask() {
+export default function FormAddTask(props) {
   const [task, setTask] = useState("");
+  const [error, setError] = useState("");
+  const { tasks, setTasks } = props;
+  const { openForm, setOpenForm } = props;
+  const { creating, handleCreate } = useFetchPost(BASE_URL + "/task");
 
-  const [state, dispatch] = useStore();
+  const handleOpen = () => {
+    setOpenForm(!openForm);
+  };
 
-  const [errorInput, setErrorInput] = useState(false);
-
-  const inputRef = useRef(null);
-
-  function handleChange(event) {
-    setErrorInput(true);
-    if (event.target.value.trim()) {
-      setErrorInput(false);
-    }
-    setTask(event.target.value);
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (!task) {
-      inputRef.current.focus();
-      setErrorInput(true);
+  const handleSubmit = async () => {
+    if (!task.trim()) {
+      setError("Invalid input!!");
       return;
     }
-    taskApi.addNewTask(task, () => {
-      dispatch(actions.addTask(task));
-    });
-    setTask("");
-    inputRef.current.focus();
-  }
+    const createSuccess = newTask => {
+      setTasks([...tasks, newTask]);
+      setOpenForm(false);
+      setTask("");
+    };
+    const newTask = { task };
+    await handleCreate({ data: newTask, createSuccess });
+  };
 
-  return (
-    <form className="form-group" onSubmit={handleSubmit}>
-      <label className="task-new--text" htmlFor="new-task">
-        New Task
-      </label>
-      <input
-        ref={inputRef}
-        type="text"
-        value={task}
-        className="input-new-task"
-        onChange={handleChange}></input>
-      <button type="submit" className="button-add-task">
-        Add
-      </button>
-      {errorInput ? <p className="text-error">Invalid Input</p> : ""}
-    </form>
+  const handleInput = useCallback(value => {
+    setTask(value);
+    if (!value.trim()) {
+      setError("Invalid input!!");
+      return;
+    }
+    setError("");
+  }, []);
+
+  const modal = (
+    <div>
+      <Form noValidate={false} onSubmit={handleSubmit}>
+        <Modal
+          open={openForm}
+          onClose={handleOpen}
+          title="Create a new todo"
+          primaryAction={{
+            content: "Create",
+            onAction: handleSubmit,
+            loading: creating,
+          }}
+          secondaryActions={[
+            {
+              content: "Cancel",
+              onAction: handleOpen,
+            },
+          ]}
+        >
+          <Modal.Section>
+            <FormLayout>
+              <TextField
+                value={task}
+                onChange={handleInput}
+                type="text"
+                error={error}
+                selectTextOnFocus={true}
+              />
+            </FormLayout>
+          </Modal.Section>
+        </Modal>
+      </Form>
+    </div>
   );
+  return <Stack>{modal}</Stack>;
 }

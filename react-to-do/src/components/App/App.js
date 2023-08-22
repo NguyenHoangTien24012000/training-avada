@@ -1,36 +1,43 @@
-import React, { useEffect } from "react";
-import "./App.css";
+import { Page, Card, Button, Spinner, Stack } from "@shopify/polaris";
+import React, { useState } from "react";
 import FormAddTask from "../FormAddTask/FormAddTask";
 import { TasksList } from "../TasksList/TasksList";
-import { TasksListComplete } from "../TasksList/TasksListComplete";
-import { useStore } from "../../context/Task/index";
-import { actions } from "../../Reducer/Tasks";
-import * as taskApi from "../../utils/api/taskApi";
+import { TasksListCompleteNew } from "../TasksList/TasksListCompleteNew";
 
-export default function App() {
-  const [state, dispatch] = useStore();
-  useEffect(() => {
-    taskApi.getAllTask((data) => {
-      dispatch(actions.getAllTask(data));
-    });
-  }, []);
+export default function App(props) {
+  const [openForm, setOpenForm] = useState(false);
+  const { tasks, setTasks, getting } = props;
   return (
-    <div className="app">
-      <h1 className="app-title">To Do App</h1>
-      <div className="app-main">
-        <div className="app-container">
-          <div className="add-task">
-            <FormAddTask></FormAddTask>
-          </div>
-          <div className="todo-list">
-            <div>
-              <TasksList></TasksList>
-              <hr></hr>
-              <TasksListComplete></TasksListComplete>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Page
+      title="Todo list"
+      primaryAction={
+        <Button primary onClick={() => setOpenForm(true)}>
+          Add Task
+        </Button>
+      }>
+      {getting ? (
+        <Stack distribution="fill" alignment="center">
+          <Spinner
+            accessibilityLabel="Spinner example"
+            size="large"
+            hasFocusableParent={true}></Spinner>
+        </Stack>
+      ) : (
+        <Card sectioned>
+          <FormAddTask
+            openForm={openForm}
+            setOpenForm={setOpenForm}
+            tasks={tasks}
+            setTasks={setTasks}
+          />
+          <TasksList tasks={tasks} setTasks={setTasks} getting={getting} />
+          <TasksListCompleteNew
+            tasks={tasks}
+            setTasks={setTasks}
+            getting={getting}
+          />
+        </Card>
+      )}
+    </Page>
   );
 }

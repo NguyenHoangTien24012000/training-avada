@@ -1,0 +1,5 @@
+[
+  { "id": "a", "name": "Learn about React", "isCompleted": false },
+  { "id": "b", "name": "Meet friend for lunch", "isCompleted": false },
+  { "id": "c", "name": "Build really cool todo app", "isCompleted": true }
+]
