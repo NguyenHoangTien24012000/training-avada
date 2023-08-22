@@ -4,7 +4,7 @@ import FormAddTask from "../FormAddTask/FormAddTask";
 import { TasksList } from "../TasksList/TasksList";
 import { TasksListCompleteNew } from "../TasksList/TasksListCompleteNew";
 
-export default function App({ tasks, setTasks }) {
+export default function App(props) {
   const [openForm, setOpenForm] = useState(false);
   const { tasks, setTasks, getting } = props;
   return (
