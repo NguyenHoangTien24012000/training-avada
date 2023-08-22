@@ -4,9 +4,7 @@ import FormAddTask from "../FormAddTask/FormAddTask";
 import { TasksList } from "../TasksList/TasksList";
 import { TasksListCompleteNew } from "../TasksList/TasksListCompleteNew";
 
-export default function App(props) {
-  //@hoangtien các biến k sử dụng xóa đi nha
-  ///@hoangtien nên truyền props ntn tasks={tasks} setTasks={setTasks}
+export default function App({ tasks, setTasks }) {
   const [openForm, setOpenForm] = useState(false);
   const { tasks, setTasks, getting } = props;
   return (
@@ -18,7 +16,7 @@ export default function App(props) {
         </Button>
       }>
       {getting ? (
-        <Stack distribution="fill" alignment="center" distribution="center">
+        <Stack distribution="fill" alignment="center">
           <Spinner
             accessibilityLabel="Spinner example"
             size="large"

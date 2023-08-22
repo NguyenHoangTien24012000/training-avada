@@ -38,8 +38,8 @@ export function HocComponentTaskList(WrappedComponent, statusCurrent) {
       );
     }
     const updateSuccess = () => {
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
           selectedTasks.includes(task.id)
             ? { ...task, isCompleted: !statusCurrent }
             : task
@@ -54,8 +54,8 @@ export function HocComponentTaskList(WrappedComponent, statusCurrent) {
     };
 
     const deleteSuccess = () => {
-      setTasks((prevTasks) => {
-        return prevTasks.filter((task) => !selectedTasks.includes(task.id));
+      setTasks(prevTasks => {
+        return prevTasks.filter(task => !selectedTasks.includes(task.id));
       });
       setSelectedTasks([]);
     };
@@ -81,7 +81,7 @@ export function HocComponentTaskList(WrappedComponent, statusCurrent) {
     ];
 
     const tasksFilter = tasks.filter(
-      (task) => task.isCompleted === statusCurrent
+      task => task.isCompleted === statusCurrent
     );
 
     return (

@@ -24,7 +24,7 @@ export async function handleAddTask(ctx) {
     ctx.status = 201;
     return (ctx.body = {
       success: true,
-      data : newTask,
+      data: newTask,
       message: "Add success!",
     });
   } catch (error) {

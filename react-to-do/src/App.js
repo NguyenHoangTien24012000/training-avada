@@ -5,7 +5,6 @@ import AppLayout from "./layout/AppLayout";
 
 export default function App() {
   return (
-    // @hoangtien b tìm hiểu xem AppProvider có những prop gì rồi sử dụng nhá
     <AppProvider
       theme={{
         logo: {
@@ -14,7 +13,8 @@ export default function App() {
           url: "/",
           accessibilityLabel: "AVADA",
         },
-      }}>
+      }}
+    >
       <AppLayout></AppLayout>
     </AppProvider>
   );
