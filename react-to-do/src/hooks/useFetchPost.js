@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useState } from 'react'
 
+
 export function useFetchPost(url) {
     const [creating, setCreating] = useState(false);
+ 
     const handleCreate = async({data ={}, createSuccess=()=>{}, createError=()=>{}})=>{
         try {
             setCreating(true);

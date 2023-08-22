@@ -1,4 +1,4 @@
-import { Card, EmptyState } from "@shopify/polaris";
+import { EmptyState } from "@shopify/polaris";
 import React from "react";
 
 //@hoangtien empty này mình thấy có bọc card ở bên ngoài rồi nếu trong này có card nữa border nó bị đè lên nhau ấy. Với phần này k có thẻ nào bên trong thì đóng thẻ luôn ntn nhé <EmptyState/>

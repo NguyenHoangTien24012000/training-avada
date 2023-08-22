@@ -1,15 +1,8 @@
-import {
-  addTask,
-  changeMultipleTask,
-  changeStatusTask,
-  deleteMultipleTask,
-  deleteTask,
-  getAllTasks,
-} from "../../database/taskRepository";
+import * as newData from "../../database/FireStore/taskRepository";
 
-export function handleGetAllTasks(ctx) {
+export async function handleGetAllTasks(ctx) {
   try {
-    const allTasks = getAllTasks();
+    const allTasks = await newData.getAllTasks();
     return (ctx.body = {
       success: true,
       data: allTasks,
@@ -24,10 +17,10 @@ export function handleGetAllTasks(ctx) {
   }
 }
 
-export function handleAddTask(ctx) {
+export async function handleAddTask(ctx) {
   try {
     const { task } = ctx.request.body;
-    const newTask = addTask(task);
+    const newTask = await newData.addTask(task);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
@@ -44,12 +37,13 @@ export function handleAddTask(ctx) {
   }
 }
 
-export function handleChangeStatusTask(ctx) {
+export async function handleChangeStatusTask(ctx) {
   try {
     const { id } = ctx.params;
-    changeStatusTask(id);
+    const isCompleted = await newData.changeStatusTask(id);
     return (ctx.body = {
       success: true,
+      data : {isCompleted},
       message: "Update success!",
     });
   } catch (error) {
@@ -61,10 +55,10 @@ export function handleChangeStatusTask(ctx) {
   }
 }
 
-export function handleDeleteTask(ctx) {
+export async function handleDeleteTask(ctx) {
   try {
     const { id } = ctx.params;
-    deleteTask(id);
+    await newData.deleteTask(id);
     return (ctx.body = {
       success: true,
       message: "Delete success!",
@@ -78,10 +72,10 @@ export function handleDeleteTask(ctx) {
   }
 }
 
-export function handleChangeMultipleStatus(ctx) {
+export async function handleChangeMultipleStatus(ctx) {
   try {
     const { arrId, statusCurrent } = ctx.request.body;
-    changeMultipleTask(arrId, statusCurrent);
+    await newData.changeMultipleTask(arrId, statusCurrent);
     return (ctx.body = {
       success: true,
       message: "Change status success!",
@@ -95,10 +89,10 @@ export function handleChangeMultipleStatus(ctx) {
   }
 }
 
-export function handleDeleteMultiple(ctx) {
+export async function handleDeleteMultiple(ctx) {
   try {
     const { arrId } = ctx.request.body;
-    deleteMultipleTask(arrId);
+    await newData.deleteMultipleTask(arrId);
     return (ctx.body = {
       success: true,
       message: "Delete success!",

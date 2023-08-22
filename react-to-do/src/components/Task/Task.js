@@ -12,7 +12,6 @@ import { BASE_URL } from "../../config/constantsApi";
 import { useFetchDelete } from "../../hooks/useFetchDelete";
 
 export default function Task(props) {
-
   const { id, name, isCompleted, setTasks } = props;
 
   const { putting, handleUpdate } = useFetchPut(BASE_URL + `/task/${id}`);
@@ -35,33 +34,31 @@ export default function Task(props) {
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
-  const deleteTask = async () =>{
-    await handleDelete({deleteSuccess})
-  }
+  const deleteTask = async () => {
+    await handleDelete({ deleteSuccess });
+  };
 
   return (
-    <ResourceItem id={id} key={id}>
-      <Stack distribution="equalSpacing">
-        <TextStyle>{name}</TextStyle>
-        <ButtonGroup>
-          {isCompleted ? (
-            <Badge status="success">Done </Badge>
-          ) : (
-            <Badge status="new">Pending</Badge>
-          )}
-          <Button onClick={() => changeStatusTask()} loading={putting}>
-            {isCompleted ? "Undo" : "Complete"}
-          </Button>
-          <Button
-            destructive
-            onClick={() => {
-              deleteTask();
-            }}
-            loading={deleting}>
-            Delete
-          </Button>
-        </ButtonGroup>
-      </Stack>
-    </ResourceItem>
+    <Stack distribution="equalSpacing">
+      <TextStyle>{name}</TextStyle>
+      <ButtonGroup>
+        {isCompleted ? (
+          <Badge status="success">Done </Badge>
+        ) : (
+          <Badge status="new">Pending</Badge>
+        )}
+        <Button onClick={() => changeStatusTask()} loading={putting}>
+          {isCompleted ? "Undo" : "Complete"}
+        </Button>
+        <Button
+          destructive
+          onClick={() => {
+            deleteTask();
+          }}
+          loading={deleting}>
+          Delete
+        </Button>
+      </ButtonGroup>
+    </Stack>
   );
 }

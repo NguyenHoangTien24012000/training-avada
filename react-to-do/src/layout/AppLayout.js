@@ -11,11 +11,11 @@ export default function AppLayout() {
   );
   const topBarMarkup = <TopBar userMenu={userMenuMarkup} />;
 
-  const {data, setData} = useFetchGet(BASE_URL + '/tasks');
+  const {data, setData, getting} = useFetchGet(BASE_URL + '/tasks');
 
   return (
     <Frame topBar={topBarMarkup}>
-      <AppMain tasks={data} setTasks={setData}/>
+      <AppMain tasks={data} setTasks={setData} getting={getting}/>
     </Frame>
   );
 }

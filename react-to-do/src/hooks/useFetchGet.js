@@ -7,7 +7,6 @@ export function useFetchGet(url) {
   const [getting, setGetting] = useState(false);
   //@hoangtien đây cũng thế tách ra thành hook rồi mình sử dụng lại ở nhiều nơi ko nên để 1 ý nghĩ ntn
   const [data, setData] = useState([]);
-  console.log("load lai");
   const [error, setError] = useState(null);
   //@hoangtien
   async function getData() {

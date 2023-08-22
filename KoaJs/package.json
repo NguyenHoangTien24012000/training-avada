@@ -8,8 +8,8 @@
     "start": "npm run production && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "production": "babel src --out-dir lib --copy-files --include-dotfiles",
-    "development": "babel src --out-dir lib --copy-files --source-maps --include-dotfiles",
-    "watch": "babel src --out-dir lib --copy-files --source-maps --include-dotfiles --watch --verbose"
+    "watch": "babel src --out-dir lib --copy-files --source-maps --include-dotfiles --watch --verbose",
+    "development": "babel src --out-dir lib --copy-files --source-maps --include-dotfiles"
   },
   "nodemonConfig": {
     "ignore": [
@@ -21,6 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@koa/cors": "^4.0.0",
+    "firebase-admin": "^11.10.1",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-router": "^10.0.0",
